@@ -85,6 +85,12 @@ const WeatherCard = ({ data }) => {
 
   ];
 
+  const weatherImages = {
+    isDay: "https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    isNight: "https://images.unsplash.com/photo-1744581047819-5e9ffb731b4c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    isRaining: "https://images.unsplash.com/photo-1594760467013-64ac2b80b7d3?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  }
+
   const renderWeatherItem = (item, index) => (
     <View key={index} style={styles.weatherItem}>
       <View style={styles.iconContainer}>
@@ -100,7 +106,7 @@ const WeatherCard = ({ data }) => {
   return (
     <Card style={styles.card}>
       <Card.Cover
-        source={{ uri: 'https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }}
+        source={{ uri: precipitation > 0 ? weatherImages.isRaining : isDay ? weatherImages.isDay : weatherImages.isNight }}
         style={styles.image}
       />
       <Card.Content style={styles.content}>
