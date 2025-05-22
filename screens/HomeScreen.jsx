@@ -7,11 +7,10 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Bible</Text>
-      <Text style={styles.subtitle}>Get random verse and chapter</Text>
-      <View style={styles.buttonsContainer}>
-        <Button icon="book" mode="contained"  onPress={() => navigation.navigate("Verse")}>Random Verses</Button>
-        <Button icon="book-open-variant" mode="contained"  onPress={() => navigation.navigate("Chapter")}>Random Chapters</Button>
+      <Text style={styles.title}>Bem-vindo ao "WeatherISH"</Text>
+      <Text style={styles.subtitle}>Veja como está o clima na sua cidade</Text>
+      <View>
+        <Button icon="weather-cloudy" mode="elevated"  style={{borderRadius: 8}} onPress={() => navigation.navigate("Weather")}>Ver clima</Button>
       </View>
     </View>
   );
@@ -34,9 +33,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
   },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '90%',
-  }
 });

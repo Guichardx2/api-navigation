@@ -5,8 +5,7 @@ import { PaperProvider } from 'react-native-paper';
 
 //Screens
 import HomeScreen from "./screens/HomeScreen";
-import VerseScreen from "./screens/VerseScreen";
-import ChapterScreen from "./screens/ChapterScreen";
+import WeatherScreen from "./screens/WeatherScreen";
 export default function App() {
   const Stack = createStackNavigator();
 
@@ -15,8 +14,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Verse" component={VerseScreen} />
-          <Stack.Screen name="Chapter" component={ChapterScreen} />
+          <Stack.Screen name="Weather" component={WeatherScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
