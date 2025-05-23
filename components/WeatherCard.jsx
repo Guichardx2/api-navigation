@@ -19,7 +19,10 @@ const WeatherCard = ({ weather, latLng }) => {
   };
 
   const latLngData = {
-    city: results[0].components.municipality || "N/A",
+    city: results[0].components.municipality || results[0].components._normalized_city || results[1].components.town || results[1].components._normalized_city || "N/A",
+    stateCode: results[0].components.state_code || results[1].components.state_code || "N/A",
+    country: results[0].components.country || "N/A",
+    countryCode: results[0].components.country_code || "N/A",
   }
 
   const time = new Date(current.time).toLocaleString("pt-BR", {
@@ -115,7 +118,7 @@ const WeatherCard = ({ weather, latLng }) => {
 
   const maxCityLength = 10;
   const cityName =
-    latLngData.city.length > maxCityLength
+    latLngData?.city?.length > maxCityLength
       ? latLngData.city.slice(0, maxCityLength) + "..."
       : latLngData.city
 
@@ -134,7 +137,7 @@ const WeatherCard = ({ weather, latLng }) => {
       />
       <Card.Content style={styles.content}>
         <View style={styles.header}>
-          <Title style={styles.title}>Clima atual em {cityName}</Title>
+          <Title style={styles.title}>Clima atual em {`${cityName || latLngData.country} ${latLngData.stateCode || latLngData.countryCode}`}</Title>
           <Paragraph style={styles.subtitle}>{time}</Paragraph>
         </View>
 
@@ -172,6 +175,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 4,
     color: "#333",
+    textAlign: "center",
   },
   subtitle: {
     color: "#666",

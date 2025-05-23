@@ -14,8 +14,10 @@ const requisition = async (url, method, data = null, params= {}) => {
     });
     
     return response.data;
+
   } catch (error) {
-    console.error('Error in requisition:', error);
+    
+    console.error('Error in requisition:', error.message);
     throw error;
   }
 };

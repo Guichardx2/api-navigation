@@ -8,10 +8,14 @@ export const useFetch = (url, params = {}) => {
     const fetchData = async () => {
       try {
         const response = await axiosService.get(url, params);
+
         console.log("Fetched data:", response);
+        
         setData(response);
+      
       } catch (error) {
-        console.error("Error fetching data:", error);
+        
+        console.error("Error fetching data:", error.message);
       }
     };
 

@@ -1,5 +1,12 @@
 import { View, StyleSheet } from "react-native";
-import { TextInput, ActivityIndicator, Text, Icon, Searchbar } from "react-native-paper";
+import {
+  TextInput,
+  ActivityIndicator,
+  Text,
+  Icon,
+  Searchbar,
+  Button,
+} from "react-native-paper";
 import { useFetch } from "../hooks/useFetch";
 import WeatherCard from "../components/WeatherCard";
 import { useEffect, useState } from "react";
@@ -12,7 +19,6 @@ const WeatherScreen = () => {
   const [searchText, setSearchText] = useState("");
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
 
   const params = {
     latitude: latitude,
@@ -35,7 +41,11 @@ const WeatherScreen = () => {
   const latLngParams = {
     q: searchText,
     key: process.env.EXPO_PUBLIC_API_KEY,
-  }
+  };
+
+  // if (!latLngData.key) {
+  //   console.warn("API key is missing");
+  // }
 
   const { data: latLngData } = useFetch(latLngUrl, latLngParams);
   const { data: weatherData } = useFetch(url, params);
@@ -47,32 +57,42 @@ const WeatherScreen = () => {
   const handleSearch = () => {
     if (!inputText.trim()) return;
     setSearchText(inputText.replace(/ /g, "+"));
-      
   };
 
   useEffect(() => {
-  if (latLngData && latLngData.results && latLngData.results.length > 0) {
-    const { lat, lng } = latLngData.results[0].geometry;
-    if (!isNaN(lat) && !isNaN(lng)) {
-      setIsLoading(true);
-      setLatidude(Number(lat));
-      setLongitude(Number(lng));
-      setTimeout(() => setIsLoading(false), 2000);
+    if (latLngData && latLngData.results && latLngData.results.length > 0) {
+      const { lat, lng } = latLngData.results[0].geometry;
+
+      if (!isNaN(lat) && !isNaN(lng)) {
+        setIsLoading(true);
+
+        setLatidude(Number(lat));
+        setLongitude(Number(lng));
+
+        setIsLoading(false);
+      }
     }
-  }
-}, [latLngData]);
+  }, [latLngData]);
 
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Searchbar 
+        <Searchbar
           mode="outlined"
           placeholder="Digite o nome da cidade"
           value={inputText}
           onChangeText={handleChangeText}
-          onIconPress={handleSearch}
-          style={{ borderRadius: 8, backgroundColor: "#fff" }}
+          onSubmitEditing={handleSearch}
+          style={styles.input}
         />
+        <Button
+          mode="contained"
+          onPress={handleSearch}
+          style={styles.buttonSearch}
+          textColor="black"
+        >
+          Buscar
+        </Button>
       </View>
 
       {latitude && longitude ? (
@@ -80,7 +100,7 @@ const WeatherScreen = () => {
           <WeatherCard weather={weatherData} latLng={latLngData} />
         ) : (
           <View style={{ marginTop: 20 }}>
-            <ActivityIndicator animating={true} size="large" color="#87cefa"/>
+            <ActivityIndicator animating={true} size="large" color="#87cefa" />
             <Text style={{ marginTop: 10 }}>Carregando...</Text>
           </View>
         )
@@ -106,8 +126,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   inputContainer: {
-    width: "80%",
-    marginTop: 10,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "90%",
+    gap: 10,
+  },
+  input:{
+    width: "70%",
+    borderRadius: 8,
+    backgroundColor: "#fff",
+  },
+  buttonSearch: {
+    backgroundColor: "#87cefa",
+    borderRadius: 8,
+    justifyContent: "center",
+    height: 45,
   },
   loadingContainer: {
     marginTop: 20,
