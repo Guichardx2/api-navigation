@@ -1,95 +1,105 @@
-import { StyleSheet, View, Text } from 'react-native';
-import { Card, Title, Paragraph, Icon } from 'react-native-paper';
+import { StyleSheet, View, Text } from "react-native";
+import { Card, Title, Paragraph, Icon } from "react-native-paper";
 
-const WeatherCard = ({ data }) => {
-  const { current } = data;
-  const isDay = current.is_day;
-  const temperature = current.temperature_2m;
-  const windSpeed = current.wind_speed_10m;
-  const humidity = current.relative_humidity_2m;
-  const rain = current.rain || 0;
-  const apparentTemperature = current.apparent_temperature;
-  const precipitation = current.precipitation || 0;
-  const cloudCover = current.cloud_cover;
-  const surfacePressure = current.surface_pressure;
-  const windDirection = current.wind_direction_10m;
- 
-  const time = new Date(current.time).toLocaleString('pt-BR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    day: '2-digit',
-    month: 'short',
+const WeatherCard = ({ weather, latLng }) => {
+  const { current } = weather;
+  const { results } = latLng;
+
+  const weatherData = {
+    isDay: current.is_day,
+    temperature: current.temperature_2m,
+    windSpeed: current.wind_speed_10m,
+    humidity: current.relative_humidity_2m,
+    rain: current.rain || 0,
+    apparentTemperature: current.apparent_temperature,
+    precipitation: current.precipitation || 0,
+    cloudCover: current.cloud_cover,
+    surfacePressure: current.surface_pressure,
+    windDirection: current.wind_direction_10m,
+  };
+
+  const latLngData = {
+    city: results[0].components.municipality || "N/A",
+  }
+
+  const time = new Date(current.time).toLocaleString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    day: "2-digit",
+    month: "short",
   });
 
-  const weatherData = [
+  const weatherInfo = [
     {
       icon: "thermometer",
       color: "#ff5722",
-      value: `${temperature || 'N/A'} °C`,
-      label: "Temperatura"
+      value: `${weatherData.temperature || "N/A"} °C`,
+      label: "Temperatura",
     },
     {
       icon: "thermometer-chevron-up",
       color: "#ff9800",
-      value: `${apparentTemperature} °C`,
-      label: "Sensação Térmica"
+      value: `${weatherData.apparentTemperature} °C`,
+      label: "Sensação Térmica",
     },
     {
       icon: "water-percent",
       color: "#03a9f4",
-      value: `${humidity}%`,
-      label: "Umidade"
+      value: `${weatherData.humidity}%`,
+      label: "Umidade",
     },
     {
       icon: "weather-windy",
       color: "#607d8b",
-      value: `${windSpeed} km/h`,
-      label: "Vento"
+      value: `${weatherData.windSpeed} km/h`,
+      label: "Vento",
     },
     {
       icon: "weather-rainy",
       color: "#2196f3",
-      value: `${rain} mm`,
-      label: "Chuva"
+      value: `${weatherData.rain} mm`,
+      label: "Chuva",
     },
     {
       icon: "weather-pouring",
       color: "#4caf50",
-      value: `${precipitation} mm`,
-      label: "Precipitação"
+      value: `${weatherData.precipitation} mm`,
+      label: "Precipitação",
     },
     {
       icon: "weather-cloudy",
       color: "#9e9e9e",
-      value: `${cloudCover}%`,
-      label: "Nuvens"
+      value: `${weatherData.cloudCover}%`,
+      label: "Nuvens",
     },
     {
       icon: "gauge",
       color: "#795548",
-      value: `${surfacePressure} hPa`,
-      label: "Pressão"
+      value: `${weatherData.surfacePressure} hPa`,
+      label: "Pressão",
     },
     {
       icon: "compass-outline",
       color: "#3f51b5",
-      value: `${windDirection}°`,
-      label: "Direção do Vento"
+      value: `${weatherData.windDirection}°`,
+      label: "Direção do Vento",
     },
     {
-      icon: isDay ? "weather-sunny" : "weather-night",
+      icon: weatherData.isDay ? "weather-sunny" : "weather-night",
       color: "#ffc107",
-      value: isDay ? "Dia" : "Noite",
-      label: "Período"
+      value: weatherData.isDay ? "Dia" : "Noite",
+      label: "Período",
     },
-
   ];
 
   const weatherImages = {
-    isDay: "https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    isNight: "https://images.unsplash.com/photo-1744581047819-5e9ffb731b4c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    isRaining: "https://images.unsplash.com/photo-1594760467013-64ac2b80b7d3?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  }
+    isDay:
+      "https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    isNight:
+      "https://images.unsplash.com/photo-1744581047819-5e9ffb731b4c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    isRaining:
+      "https://images.unsplash.com/photo-1594760467013-64ac2b80b7d3?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  };
 
   const renderWeatherItem = (item, index) => (
     <View key={index} style={styles.weatherItem}>
@@ -103,20 +113,33 @@ const WeatherCard = ({ data }) => {
     </View>
   );
 
+  const maxCityLength = 10;
+  const cityName =
+    latLngData.city.length > maxCityLength
+      ? latLngData.city.slice(0, maxCityLength) + "..."
+      : latLngData.city
+
   return (
     <Card style={styles.card}>
       <Card.Cover
-        source={{ uri: precipitation > 0 ? weatherImages.isRaining : isDay ? weatherImages.isDay : weatherImages.isNight }}
+        source={{
+          uri:
+            weatherData.precipitation > 0
+              ? weatherImages.isRaining
+              : weatherData.isDay
+              ? weatherImages.isDay
+              : weatherImages.isNight,
+        }}
         style={styles.image}
       />
       <Card.Content style={styles.content}>
         <View style={styles.header}>
-          <Title style={styles.title}>Clima Atual</Title>
+          <Title style={styles.title}>Clima atual em {cityName}</Title>
           <Paragraph style={styles.subtitle}>{time}</Paragraph>
         </View>
-       
+
         <View style={styles.dataGrid}>
-          {weatherData.map((item, index) => renderWeatherItem(item, index))}
+          {weatherInfo.map((item, index) => renderWeatherItem(item, index))}
         </View>
       </Card.Content>
     </Card>
@@ -128,8 +151,8 @@ const styles = StyleSheet.create({
     margin: 16,
     borderRadius: 16,
     elevation: 4,
-    width: '90%',
-    backgroundColor: '#ffffff',
+    width: "90%",
+    backgroundColor: "#ffffff",
   },
   image: {
     borderTopLeftRadius: 16,
@@ -142,28 +165,28 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 16,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 4,
-    color: '#333',
+    color: "#333",
   },
   subtitle: {
-    color: '#666',
+    color: "#666",
     fontSize: 14,
   },
   dataGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   weatherItem: {
-    width: '48%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa',
+    width: "48%",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f8f9fa",
     borderRadius: 12,
     padding: 12,
     marginBottom: 8,
@@ -173,9 +196,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 10,
     elevation: 2,
   },
@@ -184,14 +207,14 @@ const styles = StyleSheet.create({
   },
   valueText: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 2,
   },
   labelText: {
     fontSize: 11,
-    color: '#666',
-    textAlign: 'left',
+    color: "#666",
+    textAlign: "left",
   },
 });
 
