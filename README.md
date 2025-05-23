@@ -34,5 +34,5 @@ Aplicativo de previsão do tempo em tempo real desenvolvido com **React Native**
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/weather-forecast-app.git
+   git clone https://github.com/Guichardx2/weatherish.git
    cd weatherish
